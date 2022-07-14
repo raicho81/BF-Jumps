@@ -15,7 +15,7 @@ Jumps class >> withInputList: inputListCollection [
 	j := self new.
 	j inputList: inputListCollection.
 	j jumpsList:
-		(OrderedCollection new: inputListCollection size withAll: 0).
+		(OrderedCollection new: (inputListCollection size) withAll: 0).
 	^ j
 ]
 
@@ -40,11 +40,8 @@ Jumps >> cache [
 { #category : #initialization }
 Jumps >> computeFast [
 
-	| inputListCopy |
-	inputListCopy := inputList copy.
-	1 to: jumpsList size do: [ :index | 
-		jumpsList at: index put: (self computeJumpsFast: inputListCopy).
-		inputListCopy removeFirst ]
+	1 to: jumpsList size do: [ :_ | 
+		self computeJumpsFast: _ .]
 ]
 
 { #category : #initialization }
@@ -90,19 +87,20 @@ Jumps >> computeJumps: aInputCollection [
 ]
 
 { #category : #initialization }
-Jumps >> computeJumpsFast: list [
+Jumps >> computeJumpsFast: inputListStartPosition [
 
-	| jumps max listIndices totalmax |
-	list size = 1 ifTrue: [ ^ 0 ]. " r: Base case - list with length 1 has no jumps. The '^' operator is eqivalent to return but much shorter."
+	| jumps max listIndices totalmax listCurSlice |
+	listCurSlice := inputList slice: inputListStartPosition.
+	listCurSlice size = 1 ifTrue: [ ^ 0 ]. " r: Base case - list with length 1 has no jumps. The '^' operator is eqivalent to return but much shorter."
 	totalmax := inputList max.
 	jumps := 0.
-	max := list at: 1.
+	max := listCurSlice at: 1.
 	listIndices := OrderedCollection new. " r: List of 'visited' indices"
 	Transcript
 		show: 'inputList					: ';
 		show: inputList;
 		cr.
-	2 to: list size do: [ :index | 
+	2 to: listCurSlice size do: [ :index | 
 		Transcript
 			show: 'Iteration					: ';
 			show: index;
@@ -116,10 +114,10 @@ Jumps >> computeJumpsFast: list [
 				max < (inputList at: index) ifTrue: [ " If the current max is less than the current element in consideration => we have a jump. "
 					max := inputList at: index.
 					" Add the jump index to the current jumps 'chain' "
-					listIndices add: index.
+					listIndices add: index - 1.
 					" Increment the counts of the jumps in the current jumps 'chain' by using iterator. The iterator 'do:' evaualtes it's block (closure) for each element in the sequence passing the element as a parameter to 						 						 the block (closure) - in this case I am using '_' for the varialble name holding each element for more compact code representation (by convention 'each' is used usually) and it start's to look like ASCII Art for example - '[ :_ |' :D Block closures are one of the workhorses in Smalltalk and are a very clean and powerful abstraction. Everything in Smalltalk pretty much boils-up to a block closure at one point in time. You can read more about this powerful concept here - https://wiki.c2.com/?SmalltalkBlocksAndClosures. In order not to get confused you can think about the block closures as lambda functions if you are more familiar with this definition. "
 					listIndices do: [ :_ | 
-						inputList at: _ put: (inputList at: _) increment ].
+						jumpsList at: _ put: (jumpsList at: _) increment ].
 					Transcript
 						show: 'inputList					: ';
 						show: inputList;
@@ -136,13 +134,55 @@ Jumps >> computeJumpsFast: list [
 ]
 
 { #category : #initialization }
+Jumps >> computeJumpsSlow [
+
+	" r: (Naively) compute the list jumps by bruteforce. I bet that even if you are not familiar with Pharo / Smalltalk you will understand the algo very easy ;) "
+
+	| jumps max |
+	" (Closure) (Local) variable(s) definition "
+	jumps := 0.
+	max := inputList at: 1.
+
+	2 to: inputList size do: [ :index | 
+		| current |
+		" (Closure) (Local) variable(s) definition "
+		current := inputList at: index.
+		max < current ifTrue: [ 
+			jumps := jumps + 1.
+			max := current ] ].
+
+	^ jumps
+]
+
+{ #category : #initialization }
+Jumps >> computeJumpsSlow: aInputListCollection [
+
+	" r: (Naively) compute the list jumps by bruteforce. I bet that even if you are not familiar with Pharo / Smalltalk you will understand the algo very easy ;) "
+
+	| jumps max |
+	" (Closure) (Local) variable(s) definition "
+	jumps := 0.
+	max := aInputListCollection at: 1.
+
+	2 to: aInputListCollection size do: [ :index | 
+		| current |
+		" (Closure) (Local) variable(s) definition "
+		current := aInputListCollection at: index.
+		max < current ifTrue: [ 
+			jumps := jumps + 1.
+			max := current ] ].
+
+	^ jumps
+]
+
+{ #category : #initialization }
 Jumps >> computeSlow [
 
 	| inputListCopy |
 	inputListCopy := inputList copy.
 	1 to: jumpsList size do: [ :index | 
-		jumpsList at: index put: (self computeJumps: inputListCopy).
-		inputListCopy removeFirst]
+		jumpsList at: index put: (self computeJumpsSlow: inputListCopy).
+		inputListCopy removeFirst ]
 ]
 
 { #category : #initialization }
