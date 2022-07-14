@@ -73,7 +73,7 @@ Jumps >> computeJumpsFast: list [
 		show: inputList;
 		cr.
 
-	list size timesRepeat: [ :index |
+	(1 to: list size) collect: [ :index | 
 		Transcript
 			show: 'Iteration					: ';
 			show: index;
