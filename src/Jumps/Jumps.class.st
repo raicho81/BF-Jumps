@@ -63,18 +63,17 @@ Jumps >> computeJumps: list [
 { #category : #initialization }
 Jumps >> computeJumpsFast: list [
 
-	| jumps max listIndices index |
+	| jumps max listIndices |
 	list size = 1 ifTrue: [ ^ 0 ]. "Base case - list with length 1 has no jumps."
 	jumps := 0.
 	max := list at: 1.
 	listIndices := OrderedCollection new. "List of 'visited' indices"
-	index := 1.
 	Transcript
 		show: 'Cache					: ';
 		show: inputList;
 		cr.
 
-	list size timesRepeat: [ 
+	list size timesRepeat: [ :index |
 		Transcript
 			show: 'Iteration					: ';
 			show: index;
@@ -94,8 +93,7 @@ Jumps >> computeJumpsFast: list [
 					cr;
 					show: 'listIndices					: ';
 					show: listIndices;
-					cr ].
-				index := index + 1 ].
+					cr ] ].
 	^ jumps
 ]
 
