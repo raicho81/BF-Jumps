@@ -5,6 +5,61 @@ Class {
 }
 
 { #category : #tests }
+JumpsTest >> testComputeFast [
+
+	| j |
+	j := Jumps withInputList:
+		     (OrderedCollection withAll: { 1. 4. 2. 6. 3. 4 }).
+	j computeFast.
+	self
+		assert: j jumpsList
+		equals: (OrderedCollection withAll: { 2. 1. 1. 0. 1. 0 })
+]
+
+{ #category : #tests }
+JumpsTest >> testComputeFastFourElements [
+
+	| j |
+	j := Jumps withInputList: (OrderedCollection withAll: { 1. 0. 2. 3 }).
+	j computeFast.
+	self
+		assert: j jumpsList
+		equals: (OrderedCollection withAll: { 2. 0. 1. 0 })
+]
+
+{ #category : #tests }
+JumpsTest >> testComputeFastOneElement [
+
+	| j |
+	j := Jumps withInputList:
+		     (OrderedCollection withAll: { 1 }).
+	j computeFast.
+	self
+		assert: j jumpsList
+		equals: (OrderedCollection withAll: { 0 })
+]
+
+{ #category : #tests }
+JumpsTest >> testComputeFastThreeElements [
+
+	| j |
+	j := Jumps withInputList: (OrderedCollection withAll: { 1. 0. 2 }).
+	j computeFast.
+	self
+		assert: j jumpsList
+		equals: (OrderedCollection withAll: { 1. 0. 0 })
+]
+
+{ #category : #tests }
+JumpsTest >> testComputeFastTwoElements [
+
+	| j |
+	j := Jumps withInputList: (OrderedCollection withAll: { 1. 0 }).
+	j computeFast.
+	self assert: j jumpsList equals: (OrderedCollection withAll: { 0. 0 })
+]
+
+{ #category : #tests }
 JumpsTest >> testComputeJumps [
 
 	| input j |
@@ -41,6 +96,17 @@ JumpsTest >> testComputeSlow [
 	self
 		assert: j jumpsList
 		equals: (OrderedCollection withAll: { 2. 1. 1. 0. 1. 0 })
+]
+
+{ #category : #tests }
+JumpsTest >> testComputeSlowWith5000Random [
+
+	| j |
+	j := Jumps withRandom: 50000.
+	j computeSlow.
+	Transcript
+		show: 'JumpsList: ';
+		show: j jumpsList
 ]
 
 { #category : #tests }

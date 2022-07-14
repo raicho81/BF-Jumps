@@ -15,7 +15,8 @@ Jumps class >> withInputList: inputListCollection [
 	| j |
 	j := self new.
 	j inputList: inputListCollection.
-	j jumpsList: (OrderedCollection new: inputListCollection size withAll: 0).
+	j jumpsList:
+		(OrderedCollection new: inputListCollection size withAll: 0).
 	^ j
 ]
 
@@ -27,7 +28,7 @@ Jumps class >> withRandom: nJumps [
 	j jumpsList: (OrderedCollection new: nJumps withAll: 0).
 	inpL := OrderedCollection new: nJumps withAll: 0.
 	inpL := inpL collect: [ :_ | nJumps atRandom ].
-	j inputList: inpL.
+	j inputList: inpL sort.
 	^ j
 ]
 
@@ -35,6 +36,16 @@ Jumps class >> withRandom: nJumps [
 Jumps >> cache [
 
 	^ cache
+]
+
+{ #category : #initialization }
+Jumps >> computeFast [
+
+	| inputListCopy |
+	inputListCopy := inputList copy.
+	1 to: jumpsList size do: [ :index | 
+		jumpsList at: index put: (self computeJumpsFast: inputListCopy).
+		inputListCopy removeFirst ]
 ]
 
 { #category : #initialization }
@@ -51,21 +62,51 @@ Jumps >> computeJumps: list [
 ]
 
 { #category : #initialization }
+Jumps >> computeJumpsFast: list [
+
+	| jumps max listIndices |
+	jumps := 0.
+	list size = 1 ifTrue: [ ^ jumps ].
+	max := list at: 1.
+	listIndices := OrderedCollection new.
+	2 to: list size do: [ :index | 
+		(cache keys includes: index - 1)
+			ifTrue: [ ^ [ cache at: index - 1 ] value ]
+			ifFalse: [ 
+				(max < inputList at: index) ifTrue: [ 
+					max := inputList at: index.
+					listIndices add: index - 1.
+					cache add: index - 1 -> 0.
+					listIndices do: [ :saved_idx | 
+						cache add: saved_idx -> ([ cache at: saved_idx ] value + 1) ].
+					jumps := jumps + 1 ] ].
+	Transcript
+		show: inputList;
+		cr;
+		show: listIndices;
+		cr;
+		show: cache;
+		cr.			
+			 ].
+	^ jumps
+]
+
+{ #category : #initialization }
 Jumps >> computeSlow [
 
 	| inputListCopy |
 	inputListCopy := inputList copy.
 	1 to: jumpsList size do: [ :index | 
 		jumpsList at: index put: (self computeJumps: inputListCopy).
-		inputListCopy removeFirst ]
+		inputListCopy removeFirst]
 ]
 
 { #category : #initialization }
-Jumps >> initialize [ 
-	
+Jumps >> initialize [
+
 	inputList := OrderedCollection new.
 	jumpsList := OrderedCollection new.
-	cache := Dictionary new.
+	cache := Dictionary new
 ]
 
 { #category : #accessing }
