@@ -3,8 +3,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'jumpsList',
-		'inputList',
-		'cache'
+		'inputList'
 	],
 	#category : #'Jumps-Core'
 }
@@ -35,7 +34,7 @@ Jumps class >> withRandom: nJumps [
 { #category : #accessing }
 Jumps >> cache [
 
-	^ cache
+	^ inputList
 ]
 
 { #category : #initialization }
@@ -64,30 +63,39 @@ Jumps >> computeJumps: list [
 { #category : #initialization }
 Jumps >> computeJumpsFast: list [
 
-	| jumps max listIndices |
+	| jumps max listIndices index |
+	list size = 1 ifTrue: [ ^ 0 ]. "Base case - list with length 1 has no jumps."
 	jumps := 0.
-	list size = 1 ifTrue: [ ^ jumps ].
 	max := list at: 1.
-	listIndices := OrderedCollection new.
-	2 to: list size do: [ :index | 
-		(cache keys includes: index - 1)
-			ifTrue: [ ^ [ cache at: index - 1 ] value ]
-			ifFalse: [ 
-				(max < inputList at: index) ifTrue: [ 
-					max := inputList at: index.
-					listIndices add: index - 1.
-					cache add: index - 1 -> 0.
-					listIndices do: [ :saved_idx | 
-						cache add: saved_idx -> ([ cache at: saved_idx ] value + 1) ].
-					jumps := jumps + 1 ] ].
+	listIndices := OrderedCollection new. "List of 'visited' indices"
+	index := 1.
 	Transcript
+		show: 'Cache					: ';
 		show: inputList;
-		cr;
-		show: listIndices;
-		cr;
-		show: cache;
-		cr.			
-			 ].
+		cr.
+
+	list size timesRepeat: [ 
+		Transcript
+			show: 'Iteration					: ';
+			show: index;
+			cr.
+		(jumpsList at: index) > 0
+			ifTrue: [ ^ jumpsList at: index ]
+			ifFalse: [ 
+				max < (inputList at: index) ifTrue: [ 
+					max := inputList at: index.
+					listIndices add: index.
+					listIndices collect: [ :saved_idx | 
+						inputList at: saved_idx put: (inputList at: saved_idx value) + 1 ].
+					jumps := jumps + 1 ].
+				Transcript
+					show: 'jumpsList					: ';
+					show: jumpsList;
+					cr;
+					show: 'listIndices					: ';
+					show: listIndices;
+					cr ].
+				index := index + 1 ].
 	^ jumps
 ]
 
@@ -106,7 +114,7 @@ Jumps >> initialize [
 
 	inputList := OrderedCollection new.
 	jumpsList := OrderedCollection new.
-	cache := Dictionary new
+	inputList := Dictionary new
 ]
 
 { #category : #accessing }

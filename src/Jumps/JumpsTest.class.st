@@ -1,7 +1,7 @@
 Class {
 	#name : #JumpsTest,
 	#superclass : #TestCase,
-	#category : #'Jumps-Tests'
+	#category : #'Jumps-Test'
 }
 
 { #category : #tests }
@@ -20,7 +20,8 @@ JumpsTest >> testComputeFast [
 JumpsTest >> testComputeFastFourElements [
 
 	| j |
-	j := Jumps withInputList: (OrderedCollection withAll: { 1. 0. 2. 3 }).
+	j := Jumps withInputList:
+		     (OrderedCollection withAll: { 1. 0. 2. 3 }).
 	j computeFast.
 	self
 		assert: j jumpsList
@@ -31,12 +32,9 @@ JumpsTest >> testComputeFastFourElements [
 JumpsTest >> testComputeFastOneElement [
 
 	| j |
-	j := Jumps withInputList:
-		     (OrderedCollection withAll: { 1 }).
+	j := Jumps withInputList: (OrderedCollection withAll: { 1 }).
 	j computeFast.
-	self
-		assert: j jumpsList
-		equals: (OrderedCollection withAll: { 0 })
+	self assert: j jumpsList equals: (OrderedCollection withAll: { 0 })
 ]
 
 { #category : #tests }
@@ -60,7 +58,7 @@ JumpsTest >> testComputeFastTwoElements [
 ]
 
 { #category : #tests }
-JumpsTest >> testComputeJumps [
+JumpsTest >> testComputeJumpsSlow [
 
 	| input j |
 	j := Jumps new.
