@@ -48,15 +48,44 @@ Jumps >> computeFast [
 ]
 
 { #category : #initialization }
-Jumps >> computeJumps: list [
+Jumps >> computeJumps [
+
+	" r: (Naively) compute the list jumps by bruteforce. I bet that even if you are not familiar with Pharo / Smalltalk you will understand the algo very easy ;) "
 
 	| jumps max |
+	" (Closure) (Local) variable(s) definition "
 	jumps := 0.
-	max := list at: 1.
-	2 to: list size do: [ :index | | current | current := list at: index.
+	max := inputList at: 1.
+
+	2 to: inputList size do: [ :index | 
+		| current |
+		" (Closure) (Local) variable(s) definition "
+		current := inputList at: index.
 		max < current ifTrue: [ 
 			jumps := jumps + 1.
 			max := current ] ].
+
+	^ jumps
+]
+
+{ #category : #initialization }
+Jumps >> computeJumps: aInputCollection [
+
+	" r: (Naively) compute the list jumps by bruteforce. I bet that even if you are not familiar with Pharo / Smalltalk you will understand the algo very easy ;) "
+
+	| jumps max |
+	" (Closure) (Local) variable(s) definition "
+	jumps := 0.
+	max := aInputCollection at: 1.
+
+	2 to: aInputCollection size do: [ :index | 
+		| current |
+		" (Closure) (Local) variable(s) definition "
+		current := aInputCollection at: index.
+		max < current ifTrue: [ 
+			jumps := jumps + 1.
+			max := current ] ].
+
 	^ jumps
 ]
 
