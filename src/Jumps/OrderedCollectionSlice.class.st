@@ -15,11 +15,12 @@ Class {
 	#category : #'Jumps-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 OrderedCollectionSlice class >> withSliceStartOffset: startOffset withCollection: aOrderedCollection [
 
 	| slice |
-	slice := self class new from: aOrderedCollection.
+	slice := self new.
+	slice from: aOrderedCollection.
 	slice sliceStartOffset: startOffset.
 	^ slice
 ]
@@ -58,5 +59,5 @@ OrderedCollectionSlice >> sliceStartOffset [
 { #category : #accessing }
 OrderedCollectionSlice >> sliceStartOffset: startOffset [
 
-	sliceStartOffset := startOffset 
+	sliceStartOffset := startOffset
 ]

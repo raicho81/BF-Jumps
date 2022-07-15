@@ -1,6 +1,6 @@
 Class {
 	#name : #OrderedCollectionSliceTest,
-	#superclass : #OrderedCollection,
+	#superclass : #TestCase,
 	#instVars : [
 		'sliceStartPosition'
 	],
