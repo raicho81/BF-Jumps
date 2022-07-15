@@ -1,5 +1,5 @@
 "
-Just a very simple wrapper around OrderedCollection representing a slice in the collection rather than the whole collection.
+Just a very simple wrapper around OrderedCollection representing a slice in the collection rather than the whole collection so it can be considered a kind of restricted view of the collection contents resembling python and Go slices.
 
    Instance Variables
 

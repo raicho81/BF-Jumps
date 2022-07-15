@@ -99,8 +99,7 @@ Jumps >> computeJumps: aInputCollection [
 Jumps >> computeJumpsFast: inputListStartPosition [
 
 	| jumps max listIndices totalmax listCurSlice |
-	listCurSlice := inputList doWithIndex: [ :index :value | 
-		                index >= inputListStartPosition ].
+	listCurSlice := OrderedCollectionSlice withSliceStartPosition:  inputListStartPosition withCollection: inputList.
 	listCurSlice size = 1 ifTrue: [ ^ 0 ]. " r: Base case - list with length 1 has no jumps. The '^' operator is eqivalent to return but much shorter."
 	jumps := 0.
 	max := listCurSlice at: 1.
