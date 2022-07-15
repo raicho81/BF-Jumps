@@ -19,9 +19,9 @@ Class {
 OrderedCollectionSlice class >> withSliceStartOffset: startOffset withCollection: aOrderedCollection [
 
 	| slice |
-	slice := OrderedCollectionSlice new.
-	slice := aOrderedCollection.
-	slice sliceStartOffset: startOffset
+	slice := self class new from: aOrderedCollection.
+	slice sliceStartOffset: startOffset.
+	^ slice
 ]
 
 { #category : #accessing }
