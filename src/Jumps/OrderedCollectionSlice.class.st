@@ -48,3 +48,15 @@ OrderedCollectionSlice >> size [
 
 	^ super size - sliceStartOffset
 ]
+
+{ #category : #accessing }
+OrderedCollectionSlice >> sliceStartOffset [
+
+	^ sliceStartOffset
+]
+
+{ #category : #accessing }
+OrderedCollectionSlice >> sliceStartOffset: startOffset [
+
+	sliceStartOffset := startOffset 
+]
