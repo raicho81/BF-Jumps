@@ -46,20 +46,14 @@ Jumps class >> withRandom: nJumps [
 	^ j
 ]
 
-{ #category : #accessing }
-Jumps >> cache [
-
-	^ inputList
-]
-
-{ #category : #initialization }
+{ #category : #algorithm }
 Jumps >> computeFast [
 
 	1 to: jumpsList size do: [ :_ | 
 		self computeJumpsFast: _ .]
 ]
 
-{ #category : #initialization }
+{ #category : #algorithm }
 Jumps >> computeJumps [
 
 	" r: (Naively) compute the list jumps by bruteforce. I bet that even if you are not familiar with Pharo / Smalltalk you will understand the algo very easy ;) "
@@ -80,7 +74,7 @@ Jumps >> computeJumps [
 	^ jumps
 ]
 
-{ #category : #initialization }
+{ #category : #algorithm }
 Jumps >> computeJumps: aInputCollection [
 
 	" r: (Naively) compute the list jumps by bruteforce. I bet that even if you are not familiar with Pharo / Smalltalk you will understand the algo very easy ;) "
@@ -101,7 +95,7 @@ Jumps >> computeJumps: aInputCollection [
 	^ jumps
 ]
 
-{ #category : #initialization }
+{ #category : #algorithm }
 Jumps >> computeJumpsFast: inputListStartPosition [
 
 	| jumps max listIndices totalmax listCurSlice |
@@ -150,7 +144,7 @@ Jumps >> computeJumpsFast: inputListStartPosition [
 	^ jumps
 ]
 
-{ #category : #initialization }
+{ #category : #algorithm }
 Jumps >> computeJumpsSlow [
 
 	" r: (Naively) compute the list jumps by bruteforce. I bet that even if you are not familiar with Pharo / Smalltalk you will understand the algo very easy ;) "
@@ -171,7 +165,7 @@ Jumps >> computeJumpsSlow [
 	^ jumps
 ]
 
-{ #category : #initialization }
+{ #category : #algorithm }
 Jumps >> computeJumpsSlow: aInputListCollection [
 
 	" r: (Naively) compute the list jumps by bruteforce. I bet that even if you are not familiar with Pharo / Smalltalk you will understand the algo very easy ;) "
@@ -192,7 +186,7 @@ Jumps >> computeJumpsSlow: aInputListCollection [
 	^ jumps
 ]
 
-{ #category : #initialization }
+{ #category : #algorithm }
 Jumps >> computeSlow [
 
 	| inputListCopy |
@@ -216,7 +210,7 @@ Jumps >> inputList [
 	^ inputList
 ]
 
-{ #category : #accesing }
+{ #category : #accessing }
 Jumps >> inputList: aCollection [ 
 
 	inputList := aCollection
