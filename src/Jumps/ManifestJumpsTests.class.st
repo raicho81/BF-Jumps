@@ -4,7 +4,7 @@ Please describe the package using the class comment of the included manifest cla
 Class {
 	#name : #ManifestJumpsTests,
 	#superclass : #PackageManifest,
-	#category : #'Jumps-Test-Manifest'
+	#category : #'Jumps-Manifest'
 }
 
 { #category : #'code-critics' }

@@ -90,12 +90,13 @@ Jumps >> computeJumps: aInputCollection [
 Jumps >> computeJumpsFast: inputListStartPosition [
 
 	| jumps max listIndices totalmax listCurSlice |
-	listCurSlice := inputList withIndexSelect: [ :index | 
+	listCurSlice := inputList doWithIndex: [ :index :value | 
 		                index >= inputListStartPosition ].
 	listCurSlice size = 1 ifTrue: [ ^ 0 ]. " r: Base case - list with length 1 has no jumps. The '^' operator is eqivalent to return but much shorter."
-	totalmax := inputList max.
 	jumps := 0.
 	max := listCurSlice at: 1.
+	totalmax := listCurSlice max.
+
 	listIndices := OrderedCollection new. " r: List of 'visited' indices"
 	Transcript
 		show: 'inputList					: ';
@@ -103,7 +104,7 @@ Jumps >> computeJumpsFast: inputListStartPosition [
 		cr.
 	2 to: listCurSlice size do: [ :index | 
 		Transcript
-			show: 'Iteration					: ';
+			show: 'index:					: ';
 			show: index;
 			cr.
 		(inputList at: index) = totalmax ifTrue: [ ^ 0 ]. " r: Nicky's partial optimization goes here. "
@@ -116,7 +117,7 @@ Jumps >> computeJumpsFast: inputListStartPosition [
 					max := inputList at: index.
 					" Add the jump index to the current jumps 'chain' "
 					listIndices add: index - 1.
-					" Increment the counts of the jumps in the current jumps 'chain' by using iterator. The iterator 'do:' evaualtes it's block (closure) for each element in the sequence passing the element as a parameter to 						 						 the block (closure) - in this case I am using '_' for the varialble name holding each element for more compact code representation (by convention 'each' is used usually) and it start's to look like ASCII Art for example - '[ :_ |' :D Block closures are one of the workhorses in Smalltalk and are a very clean and powerful abstraction. Everything in Smalltalk pretty much boils-up to a block closure at one point in time. You can read more about this powerful concept here - https://wiki.c2.com/?SmalltalkBlocksAndClosures. In order not to get confused you can think about the block closures as lambda functions if you are more familiar with this definition. "
+					" Increment the counts of the jumps in the current jumps 'chain' by using iterator. The iterator 'do:' evaualtes it's block (closure) for each element in the sequence passing the element as a parameter to 						 						 the block (closure) - in this case I am using '_' for the varialble name holding each element for more compact code representation (by convention 'each' is used usually) and it start's to look like ASCII Art for example - ' :_ |' :D Block closures are one of the workhorses in Smalltalk and are a very clean and powerful abstraction. Everything in Smalltalk pretty much boils-up to a block closure at one point in time. You can read more about this powerful concept here - https://wiki.c2.com/?SmalltalkBlocksAndClosures. In order not to get confused you can think about the block closures as lambda functions if you are more familiar with this definition. "
 					listIndices do: [ :_ | 
 						jumpsList at: _ put: (jumpsList at: _) + 1 ].
 					Transcript
@@ -140,13 +141,13 @@ Jumps >> computeJumpsSlow [
 	" r: (Naively) compute the list jumps by bruteforce. I bet that even if you are not familiar with Pharo / Smalltalk you will understand the algo very easy ;) "
 
 	| jumps max |
-	" (Closure) (Local) variable(s) definition "
+	" (Closure Local) variable(s) definition "
 	jumps := 0.
 	max := inputList at: 1.
 
 	2 to: inputList size do: [ :index | 
 		| current |
-		" (Closure) (Local) variable(s) definition "
+		" (Closure Local) variable(s) definition "
 		current := inputList at: index.
 		max < current ifTrue: [ 
 			jumps := jumps + 1.
