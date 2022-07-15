@@ -1,3 +1,18 @@
+"
+Class to compute the 'jumps' in a list of integers.
+
+Algo description:
+
+
+Internal Representation and Key Implementation Points.
+
+    Instance Variables
+	inputList:		<Object>
+	jumpsList:		<Object>
+
+
+    Implementation Points
+"
 Class {
 	#name : #Jumps,
 	#superclass : #Object,
