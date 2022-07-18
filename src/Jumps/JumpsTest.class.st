@@ -167,15 +167,28 @@ JumpsTest >> testComputeSlow [
 { #category : #tests }
 JumpsTest >> testComputeSlowVsFastWith500Random [
 
-	| j jumpsSlow inpListRandom |
-	inpListRandom := OrderedCollection new: 500.
-	inpListRandom:= inpListRandom collect: [ :_ | 500 atRandom ].
+	| j jumpsSlow inpListRandom start duration |
+	inpListRandom := OrderedCollection new: 500 withAll: 0.
+	inpListRandom := inpListRandom collect: [ :_ | 500 atRandom ].
+	inpListRandom sort.
 	j := Jumps withInputList: inpListRandom.
+	start := Time nowUTC.
 	j computeSlow.
-	jumpsSlow := j jumpsList copy.
+	duration := Time nowUTC subtractTime: start.
+	Transcript
+		show: 'computeSlow time: ';
+		show: duration asMilliSeconds;
+		cr.
 
+	jumpsSlow := j jumpsList copy.
 	j := Jumps withInputList: inpListRandom.
+	start := Time nowUTC.
 	j computeFast.
+	duration := Time nowUTC subtractTime: start.
+	Transcript
+		show: 'computeFast time: ';
+		show: duration asMilliSeconds;
+		cr.
 	self assert: jumpsSlow equals: j jumpsList
 ]
 
