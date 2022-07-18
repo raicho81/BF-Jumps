@@ -180,17 +180,6 @@ JumpsTest >> testComputeSlowVsFastWith500Random [
 ]
 
 { #category : #tests }
-JumpsTest >> testComputeSlowWith500Random [
-
-	| j |
-	j := Jumps withRandom: 500.
-	j computeSlow.
-	Transcript
-		show: 'JumpsList: ';
-		show: j jumpsList
-]
-
-{ #category : #tests }
 JumpsTest >> testInitializationIsOk [
 
 	| j |
