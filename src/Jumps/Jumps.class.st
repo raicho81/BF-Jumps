@@ -57,19 +57,30 @@ Jumps >> computeFast [
 { #category : #algorithm }
 Jumps >> computeJumpsFast: startPos [
 
-	| jumps max |
-	jumps := 0.
+	| max jumpsListIndices |
 	max := inputList at: startPos.
+	jumpsListIndices := OrderedCollection new.
+	jumpsListIndices add: startPos.
 
-	startPos + 1 to: inputList size do: [ :index | 
-		| current |
-		current := inputList at: index.
+	startPos + 1 to: inputList size do: [ :index |
+		max < (inputList at: index) ifTrue: [ 
+			max := inputList at: index.
+			(computed includes: index)
+				ifNil: [ 
+					jumpsListIndices do: [ :each | 
+						jumpsList at: each put: (jumpsList at: each) + 1 ].
+					jumpsListIndices add: index ]
+				ifNotNil: [ 
+					jumpsListIndices do: [ :each | 
+						jumpsList
+							at: each
+							put: (jumpsList at: each) + (jumpsList at: index) ].
+					computed addAll: jumpsListIndices.
+					^ jumpsList at: startPos ].
 
-		max < current ifTrue: [ 
-			jumps := jumps + 1.
-			max := current ] ].
+			inputList size = index ifTrue: [ computed addAll: jumpsListIndices ] ] ].
 
-	^ jumps
+	^ jumpsList at: startPos
 ]
 
 { #category : #algorithm }
