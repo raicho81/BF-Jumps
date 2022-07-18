@@ -180,10 +180,10 @@ JumpsTest >> testComputeSlowVsFastWith500Random [
 ]
 
 { #category : #tests }
-JumpsTest >> testComputeSlowWith5000Random [
+JumpsTest >> testComputeSlowWith500Random [
 
 	| j |
-	j := Jumps withRandom: 50000.
+	j := Jumps withRandom: 500.
 	j computeSlow.
 	Transcript
 		show: 'JumpsList: ';
