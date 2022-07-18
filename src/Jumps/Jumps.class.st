@@ -49,30 +49,24 @@ Jumps class >> withRandom: nJumps [
 { #category : #algorithm }
 Jumps >> computeFast [
 
-	1 to: jumpsList size do: [ :_ | 
-		self computeJumpsFast: _ .]
+	1 to: jumpsList size - 1 do: [ :_ | self computeJumpsFast: _ ]
 ]
 
 { #category : #algorithm }
 Jumps >> computeJumpsFast: inputListStartPosition [
 
-	| jumps max listIndices totalmax listCurSlice |
-	listCurSlice := OrderedCollectionSlice withSliceStartOffset:  inputListStartPosition withCollection: inputList.
-	listCurSlice size = 1 ifTrue: [ ^ 0 ]. " r: Base case - list with length 1 has no jumps. The '^' operator is eqivalent to return but much shorter."
+	| jumps max listIndices totalmax |
+	inputList size - inputListStartPosition + 1 = 1 ifTrue: [ ^ 0 ]. " r: Base case - list with length 1 has no jumps. The '^' operator is eqivalent to return but much shorter."
 	jumps := 0.
-	max := listCurSlice at: 1.
-	totalmax := listCurSlice max.
+	max := inputList at: inputListStartPosition.
+	totalmax := inputList max.
 
 	listIndices := OrderedCollection new. " r: List of 'visited' indices"
 	Transcript
 		show: 'inputList					: ';
 		show: inputList;
 		cr.
-	2 to: listCurSlice size do: [ :index | 
-		Transcript
-			show: 'index:					: ';
-			show: index;
-			cr.
+	inputListStartPosition + 1 to: inputList size do: [ :index | 
 		(inputList at: index) = totalmax ifTrue: [ ^ 0 ]. " r: Nicky's partial optimization goes here. "
 		" r: Check if we have cached data for the current index "
 		(jumpsList at: index - 1) > 0
@@ -83,7 +77,7 @@ Jumps >> computeJumpsFast: inputListStartPosition [
 					max := inputList at: index.
 					" Add the jump index to the current jumps 'chain' "
 					listIndices add: index - 1.
-					" Increment the counts of the jumps in the current jumps 'chain' by using iterator. The iterator 'do:' evaualtes it's block (closure) for each element in the sequence passing the element as a parameter to 						 						 the block (closure) - in this case I am using '_' for the varialble name holding each element for more compact code representation (by convention 'each' is used usually) and it start's to look like ASCII Art for example - ' :_ |' :D Block closures are one of the workhorses in Smalltalk and are a very clean and powerful abstraction. Everything in Smalltalk pretty much boils-up to a block closure at one point in time. You can read more about this powerful concept here - https://wiki.c2.com/?SmalltalkBlocksAndClosures. In order not to get confused you can think about the block closures as lambda functions if you are more familiar with this definition. "
+					" Increment the counts of the jumps in the current jumps 'chain' by using iterator. The iterator 'do:' evaualtes it's block (closure) for each element in the sequence passing the element as a parameter to 						  					  the block (closure) - in this case I am using '_' for the varialble name holding each element for more compact code representation (by convention 'each' is used usually). Block closures are one of the                        workhorses of Smalltalk and are a very clean and powerful abstraction. Everything in Smalltalk pretty much boils-up to a block closure at one point in time. You can read more about this powerful concept                      here - https://wiki.c2.com/?SmalltalkBlocksAndClosures. In order not to get confused you can think about the block closures as lambda functions if you are more familiar with this definition. "
 					listIndices do: [ :_ | 
 						jumpsList at: _ put: (jumpsList at: _) + 1 ].
 					Transcript
