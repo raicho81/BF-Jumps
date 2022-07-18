@@ -38,12 +38,30 @@ JumpsTest >> testComputeFastFourElements [
 	self
 		assert: j jumpsList
 		equals: (OrderedCollection withAll: { 1. 1. 1. 0 }).
-		
+
 	j := Jumps withInputList: (OrderedCollection withAll: { 2. 2. 2. 2 }).
 	j computeFast.
 	self
 		assert: j jumpsList
-		equals: (OrderedCollection withAll: { 0. 0. 0. 0 })
+		equals: (OrderedCollection withAll: { 0. 0. 0. 0 }).
+
+	j := Jumps withInputList: (OrderedCollection withAll: { 3. 2. 1. 0 }).
+	j computeFast.
+	self
+		assert: j jumpsList
+		equals: (OrderedCollection withAll: { 0. 0. 0. 0 }).
+
+	j := Jumps withInputList: (OrderedCollection withAll: { 1. 2. 1. 2 }).
+	j computeFast.
+	self
+		assert: j jumpsList
+		equals: (OrderedCollection withAll: { 1. 0. 1. 0 }).
+
+	j := Jumps withInputList: (OrderedCollection withAll: { 1. 2. 3. 4 }).
+	j computeFast.
+	self
+		assert: j jumpsList
+		equals: (OrderedCollection withAll: { 3. 2. 1. 0 })		
 ]
 
 { #category : #tests }
@@ -63,7 +81,19 @@ JumpsTest >> testComputeFastThreeElements [
 	j computeFast.
 	self
 		assert: j jumpsList
-		equals: (OrderedCollection withAll: { 1. 1. 0 })
+		equals: (OrderedCollection withAll: { 1. 1. 0 }).
+
+	j := Jumps withInputList: (OrderedCollection withAll: { 1. 2. 3 }).
+	j computeFast.
+	self
+		assert: j jumpsList
+		equals: (OrderedCollection withAll: { 2. 1. 0 }).
+
+	j := Jumps withInputList: (OrderedCollection withAll: { 1. 1. 3 }).
+	j computeFast.
+	self
+		assert: j jumpsList
+		equals: (OrderedCollection withAll: { 1. 1. 0 })		
 ]
 
 { #category : #tests }
@@ -132,6 +162,21 @@ JumpsTest >> testComputeSlow [
 	self
 		assert: j jumpsList
 		equals: (OrderedCollection withAll: { 2. 1. 1. 0. 1. 0 })
+]
+
+{ #category : #tests }
+JumpsTest >> testComputeSlowVsFastWith500Random [
+
+	| j jumpsSlow inpListRandom |
+	inpListRandom := OrderedCollection new: 500.
+	inpListRandom:= inpListRandom collect: [ :_ | 500 atRandom ].
+	j := Jumps withInputList: inpListRandom.
+	j computeSlow.
+	jumpsSlow := j jumpsList copy.
+
+	j := Jumps withInputList: inpListRandom.
+	j computeFast.
+	self assert: jumpsSlow equals: j jumpsList
 ]
 
 { #category : #tests }
