@@ -18,7 +18,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'jumpsList',
-		'inputList'
+		'inputList',
+		'computed'
 	],
 	#category : #'Jumps-Core'
 }
@@ -49,32 +50,26 @@ Jumps class >> withRandom: nJumps [
 { #category : #algorithm }
 Jumps >> computeFast [
 
-	1 to: jumpsList size - 1 do: [ :_ | self computeJumpsFast: _ ]
+	1 to: jumpsList size do: [ :index |
+	jumpsList at: index put: (self computeJumpsFast: index) ]
 ]
 
 { #category : #algorithm }
-Jumps >> computeJumpsFast: inputListStartPosition [
+Jumps >> computeJumpsFast: startPos [
 
-	| jumps max listIndices totalmax |
-	inputList size - inputListStartPosition + 1 = 1 ifTrue: [ ^ 0 ].
-	jumps := 1.
-	max := inputList at: inputListStartPosition.
-	totalmax := inputList max.
+	| jumps max |
+	jumps := 0.
+	max := inputList at: startPos.
 
-	listIndices := OrderedCollection new.
-	inputListStartPosition + 1 to: inputList size do: [ :index | 
-		(jumpsList at: index - 1) > 0
-			ifTrue: [ 
-				jumps := jumpsList at: index - 1.
-				listIndices do: [ :_ | 
-					jumpsList at: _ put: (jumpsList at: _) + jumps ].
-				^ self ]
-			ifFalse: [ 
-				listIndices add: index - 1.
-				max < (inputList at: index) ifTrue: [ 
-					max := inputList at: index.
-					listIndices do: [ :_ | 
-						jumpsList at: _ put: (jumpsList at: _) + jumps ] ] ] ]
+	startPos + 1 to: inputList size do: [ :index | 
+		| current |
+		current := inputList at: index.
+
+		max < current ifTrue: [ 
+			jumps := jumps + 1.
+			max := current ] ].
+
+	^ jumps
 ]
 
 { #category : #algorithm }
@@ -100,8 +95,14 @@ Jumps >> computeJumpsSlow: startPos [
 { #category : #algorithm }
 Jumps >> computeSlow [
 
-	1 to: jumpsList size - 1 do: [ :index | 
+	1 to: jumpsList size do: [ :index | 
 	jumpsList at: index put: (self computeJumpsSlow: index) ]
+]
+
+{ #category : #accessing }
+Jumps >> computed [
+
+	^ computed
 ]
 
 { #category : #initialization }
@@ -109,7 +110,7 @@ Jumps >> initialize [
 
 	inputList := OrderedCollection new.
 	jumpsList := OrderedCollection new.
-	inputList := Dictionary new
+	computed := Set new.
 ]
 
 { #category : #accessing }

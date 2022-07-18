@@ -61,7 +61,8 @@ JumpsTest >> testComputeFastFourElements [
 	j computeFast.
 	self
 		assert: j jumpsList
-		equals: (OrderedCollection withAll: { 3. 2. 1. 0 })		
+		equals: (OrderedCollection withAll: { 3. 2. 1. 0 })
+
 ]
 
 { #category : #tests }
@@ -199,7 +200,8 @@ JumpsTest >> testInitializationIsOk [
 	j := Jumps new.
 	self assert: j isNotNil.
 	self assert: j jumpsList isEmpty.
-	self assert: j inputList isEmpty
+	self assert: j inputList isEmpty.
+	self assert: j computed isEmpty.
 ]
 
 { #category : #tests }
