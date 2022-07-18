@@ -74,20 +74,26 @@ JumpsTest >> testComputeFastTwoElements [
 { #category : #tests }
 JumpsTest >> testComputeJumpsSlow [
 
-	| input j |
+	| j |
 	j := Jumps new.
-	input := { 1. 1. 1. 1. 1. 1 }.
-	self assert: (j computeJumps: input) equals: 0.
-	input := { 1. 4. 2. 6. 3. 4 }.
-	self assert: (j computeJumps: input) equals: 2.
-	input := { 1. 3. 2. 6. 3. 7 }.
-	self assert: (j computeJumps: input) equals: 3.
-	input := { 1. 3. 2. 6. 3. 7. 5. 8. 9 }.
-	self assert: (j computeJumps: input) equals: 5.
-	input := { 1. 3. 2. 6. 3. 7. 5. 8. 9. 1. 1. 1. 10. 9. 8. 12 }.
-	self assert: (j computeJumps: input) equals: 7.
-	input := { 1. 3. 2. 6. 3. 7. 1. 2. 1. 1. 1. 1. 10. 9. 8. 12 }.
-	self assert: (j computeJumps: input) equals: 5
+
+	j inputList: { 1. 1. 1. 1. 1. 1 }.
+	self assert: (j computeJumpsSlow: 1) equals: 0.
+
+	j inputList: { 1. 4. 2. 6. 3. 4 }.
+	self assert: (j computeJumpsSlow: 1) equals: 2.
+
+	j inputList: { 1. 3. 2. 6. 3. 7 }.
+	self assert: (j computeJumpsSlow: 1) equals: 3.
+
+	j inputList: { 1. 3. 2. 6. 3. 7. 5. 8. 9 }.
+	self assert: (j computeJumpsSlow: 1) equals: 5.
+
+	j inputList: { 1. 3. 2. 6. 3. 7. 5. 8. 9. 1. 1. 1. 10. 9. 8. 12 }.
+	self assert: (j computeJumpsSlow: 1) equals: 7.
+
+	j inputList: { 1. 3. 2. 6. 3. 7. 1. 2. 1. 1. 1. 1. 10. 9. 8. 12 }.
+	self assert: (j computeJumpsSlow: 1) equals: 5
 ]
 
 { #category : #tests }
@@ -128,8 +134,7 @@ JumpsTest >> testInitializationIsOk [
 	j := Jumps new.
 	self assert: j isNotNil.
 	self assert: j jumpsList isEmpty.
-	self assert: j inputList isEmpty.
-	self assert: j cache isEmpty.
+	self assert: j inputList isEmpty
 ]
 
 { #category : #tests }

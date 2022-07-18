@@ -54,48 +54,6 @@ Jumps >> computeFast [
 ]
 
 { #category : #algorithm }
-Jumps >> computeJumps [
-
-	" r: (Naively) compute the list jumps by bruteforce. I bet that even if you are not familiar with Pharo / Smalltalk you will understand the algo very easy ;) "
-
-	| jumps max |
-	" (Closure) (Local) variable(s) definition "
-	jumps := 0.
-	max := inputList at: 1.
-
-	2 to: inputList size do: [ :index | 
-		| current |
-		" (Closure) (Local) variable(s) definition "
-		current := inputList at: index.
-		max < current ifTrue: [ 
-			jumps := jumps + 1.
-			max := current ] ].
-
-	^ jumps
-]
-
-{ #category : #algorithm }
-Jumps >> computeJumps: aInputCollection [
-
-	" r: (Naively) compute the list jumps by bruteforce. I bet that even if you are not familiar with Pharo / Smalltalk you will understand the algo very easy ;) "
-
-	| jumps max |
-	" (Closure) (Local) variable(s) definition "
-	jumps := 0.
-	max := aInputCollection at: 1.
-
-	2 to: aInputCollection size do: [ :index | 
-		| current |
-		" (Closure) (Local) variable(s) definition "
-		current := aInputCollection at: index.
-		max < current ifTrue: [ 
-			jumps := jumps + 1.
-			max := current ] ].
-
-	^ jumps
-]
-
-{ #category : #algorithm }
 Jumps >> computeJumpsFast: inputListStartPosition [
 
 	| jumps max listIndices totalmax listCurSlice |
@@ -144,40 +102,19 @@ Jumps >> computeJumpsFast: inputListStartPosition [
 ]
 
 { #category : #algorithm }
-Jumps >> computeJumpsSlow [
+Jumps >> computeJumpsSlow: startPos [
 
-	" r: (Naively) compute the list jumps by bruteforce. I bet that even if you are not familiar with Pharo / Smalltalk you will understand the algo very easy ;) "
-
-	| jumps max |
-	" (Closure Local) variable(s) definition "
-	jumps := 0.
-	max := inputList at: 1.
-
-	2 to: inputList size do: [ :index | 
-		| current |
-		" (Closure Local) variable(s) definition "
-		current := inputList at: index.
-		max < current ifTrue: [ 
-			jumps := jumps + 1.
-			max := current ] ].
-
-	^ jumps
-]
-
-{ #category : #algorithm }
-Jumps >> computeJumpsSlow: aInputListCollection [
-
-	" r: (Naively) compute the list jumps by bruteforce. I bet that even if you are not familiar with Pharo / Smalltalk you will understand the algo very easy ;) "
+	" r: (Naively) compute the list jumps by bruteforce."
 
 	| jumps max |
 	" (Closure) (Local) variable(s) definition "
 	jumps := 0.
-	max := aInputListCollection at: 1.
+	max := inputList at: startPos.
 
-	2 to: aInputListCollection size do: [ :index | 
+	(startPos + 1) to: inputList size do: [ :index | 
 		| current |
 		" (Closure) (Local) variable(s) definition "
-		current := aInputListCollection at: index.
+		current := inputList at: index.
 		max < current ifTrue: [ 
 			jumps := jumps + 1.
 			max := current ] ].
@@ -188,11 +125,8 @@ Jumps >> computeJumpsSlow: aInputListCollection [
 { #category : #algorithm }
 Jumps >> computeSlow [
 
-	| inputListCopy |
-	inputListCopy := inputList copy.
-	1 to: jumpsList size do: [ :index | 
-		jumpsList at: index put: (self computeJumpsSlow: inputListCopy).
-		inputListCopy removeFirst ]
+	1 to: jumpsList size - 1 do: [ :index | 
+	jumpsList at: index put: (self computeJumpsSlow: index) ]
 ]
 
 { #category : #initialization }

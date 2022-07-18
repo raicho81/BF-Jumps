@@ -16,3 +16,8 @@ ManifestJumpsCore class >> ruleCollectSelectNotUsedRuleV1FalsePositive [
 ManifestJumpsCore class >> ruleLongMethodsRuleV1FalsePositive [
 	^ #(#(#(#RGMethodDefinition #(#Jumps #computeJumpsFast: #false)) #'2022-07-14T22:51:27.40674+03:00') )
 ]
+
+{ #category : #'code-critics' }
+ManifestJumpsCore class >> ruleUtilityMethodsRuleV1FalsePositive [
+	^ #(#(#(#RGMethodDefinition #(#Jumps #computeJumpsSlow: #false)) #'2022-07-18T14:37:21.709864+03:00') )
+]
