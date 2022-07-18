@@ -21,12 +21,11 @@ JumpsTest >> testComputeFast [
 JumpsTest >> testComputeFastFourElements [
 
 	| j |
-	j := Jumps withInputList:
-		     (OrderedCollection withAll: { 1. 0. 2. 3 }).
+	j := Jumps withInputList: (OrderedCollection withAll: { 1. 0. 2. 3 }).
 	j computeFast.
 	self
 		assert: j jumpsList
-		equals: (OrderedCollection withAll: { 2. 0. 1. 0 })
+		equals: (OrderedCollection withAll: { 2. 2. 1. 0 })
 ]
 
 { #category : #tests }
@@ -46,7 +45,7 @@ JumpsTest >> testComputeFastThreeElements [
 	j computeFast.
 	self
 		assert: j jumpsList
-		equals: (OrderedCollection withAll: { 1. 0. 0 })
+		equals: (OrderedCollection withAll: { 1. 1. 0 })
 ]
 
 { #category : #tests }
@@ -69,7 +68,7 @@ JumpsTest >> testComputeFastTwoElements [
 	j computeFast.
 	self
 		assert: j jumpsList
-		equals: (OrderedCollection withAll: { 0. 0 })	
+		equals: (OrderedCollection withAll: { 1. 0 })	
 ]
 
 { #category : #tests }
