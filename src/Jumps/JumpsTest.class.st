@@ -5,13 +5,13 @@ Class {
 }
 
 { #category : #tests }
-JumpsTest >> testComputeFast [
+JumpsTest >> testComputeFastExample [
 
 	| j |
 	j := Jumps withInputList:
 		     (OrderedCollection withAll: { 1. 4. 2. 6. 3. 4 }).
 	j computeFast.
-	
+
 	self
 		assert: j jumpsList
 		equals: (OrderedCollection withAll: { 2. 1. 1. 0. 1. 0 })
@@ -25,7 +25,25 @@ JumpsTest >> testComputeFastFourElements [
 	j computeFast.
 	self
 		assert: j jumpsList
-		equals: (OrderedCollection withAll: { 2. 2. 1. 0 })
+		equals: (OrderedCollection withAll: { 2. 2. 1. 0 }).
+
+	j := Jumps withInputList: (OrderedCollection withAll: { 2. 2. 0. 3 }).
+	j computeFast.
+	self
+		assert: j jumpsList
+		equals: (OrderedCollection withAll: { 1. 1. 1. 0 }).
+
+	j := Jumps withInputList: (OrderedCollection withAll: { 2. 2. 2. 3 }).
+	j computeFast.
+	self
+		assert: j jumpsList
+		equals: (OrderedCollection withAll: { 1. 1. 1. 0 }).
+		
+	j := Jumps withInputList: (OrderedCollection withAll: { 2. 2. 2. 2 }).
+	j computeFast.
+	self
+		assert: j jumpsList
+		equals: (OrderedCollection withAll: { 0. 0. 0. 0 })
 ]
 
 { #category : #tests }
