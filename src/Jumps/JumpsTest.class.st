@@ -11,6 +11,7 @@ JumpsTest >> testComputeFast [
 	j := Jumps withInputList:
 		     (OrderedCollection withAll: { 1. 4. 2. 6. 3. 4 }).
 	j computeFast.
+	
 	self
 		assert: j jumpsList
 		equals: (OrderedCollection withAll: { 2. 1. 1. 0. 1. 0 })

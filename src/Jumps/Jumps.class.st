@@ -107,14 +107,13 @@ Jumps >> computeJumpsSlow: startPos [
 	" r: (Naively) compute the list jumps by bruteforce."
 
 	| jumps max |
-	" (Closure) (Local) variable(s) definition "
 	jumps := 0.
 	max := inputList at: startPos.
 
-	(startPos + 1) to: inputList size do: [ :index | 
+	startPos + 1 to: inputList size do: [ :index | 
 		| current |
-		" (Closure) (Local) variable(s) definition "
 		current := inputList at: index.
+
 		max < current ifTrue: [ 
 			jumps := jumps + 1.
 			max := current ] ].
