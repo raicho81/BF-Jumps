@@ -19,8 +19,9 @@ Class {
 OrderedCollectionSlice class >> withSliceStartOffset: startOffset withCollection: aOrderedCollection [
 
 	| slice |
-	slice := self new.
-	slice from: aOrderedCollection.
+	slice := self
+		         new: aOrderedCollection size;
+		         withAll: aOrderedCollection.
 	slice sliceStartOffset: startOffset.
 	^ slice
 ]
@@ -28,7 +29,7 @@ OrderedCollectionSlice class >> withSliceStartOffset: startOffset withCollection
 { #category : #accessing }
 OrderedCollectionSlice >> at: pos [
 
-	^ self at: pos + sliceStartOffset
+	^ super at: pos + sliceStartOffset
 ]
 
 { #category : #iterating }
