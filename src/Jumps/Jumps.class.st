@@ -171,7 +171,7 @@ Jumps >> initialize [
 
 	inputList := OrderedCollection new.
 	jumpsList := OrderedCollection new.
-	computed := Bag new.
+	computed := Set new.
 	totalmax := 0
 ]
 

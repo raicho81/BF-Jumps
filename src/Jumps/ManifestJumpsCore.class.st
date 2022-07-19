@@ -42,6 +42,11 @@ ManifestJumpsCore class >> ruleSentNotImplementedRuleV1FalsePositive [
 ]
 
 { #category : #'code-critics' }
+ManifestJumpsCore class >> ruleTempsReadBeforeWrittenRuleV1FalsePositive [
+	^ #(#(#(#RGMethodDefinition #(#JumpsTest #testComputeSlowVsFastWith50000Random #false)) #'2022-07-19T07:24:09.447326+03:00') )
+]
+
+{ #category : #'code-critics' }
 ManifestJumpsCore class >> ruleUtilityMethodsRuleV1FalsePositive [
 
 	^ #( #( #( #RGMethodDefinition #( #Jumps #computeJumpsSlow:
