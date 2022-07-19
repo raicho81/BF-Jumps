@@ -19,7 +19,8 @@ Class {
 	#instVars : [
 		'jumpsList',
 		'inputList',
-		'computed'
+		'computed',
+		'totalmax'
 	],
 	#category : #'Jumps-Core'
 }
@@ -30,6 +31,7 @@ Jumps class >> withInputList: inputListCollection [
 	| j |
 	j := self new.
 	j inputList: inputListCollection.
+	j totalmax: j inputList max.
 	j jumpsList:
 		(OrderedCollection new: inputListCollection size withAll: 0).
 	^ j
@@ -43,14 +45,16 @@ Jumps class >> withRandom: nJumps [
 	j jumpsList: (OrderedCollection new: nJumps withAll: 0).
 	inpL := OrderedCollection new: nJumps withAll: 0.
 	inpL := inpL collect: [ :_ | nJumps atRandom ].
-	j inputList: inpL sort.
+	j inputList: inpL.
+	j totalmax: j inputList max.
 	^ j
 ]
 
 { #category : #algorithm }
 Jumps >> computeFast [
 
-	1 to: inputList size - 1 do: [ :each | self computeJumpsFast: each]
+	1 to: inputList size - 1 do: [ :each | 
+		self computeJumpsFast: each]
 ]
 
 { #category : #algorithm }
@@ -63,6 +67,7 @@ Jumps >> computeJumpsFast: startPos [
 	jumpsListIndices add: startPos.
 
 	startPos + 1 to: inputList size do: [ :index | 
+		max = totalmax ifTrue: [ computed addAll: jumpsListIndices. ^ self ].
 		max < (inputList at: index) ifTrue: [ 
 			jumpsListIndices do: [ :each | 
 				jumpsList at: each put: (jumpsList at: each) + 1 ].
@@ -73,7 +78,7 @@ Jumps >> computeJumpsFast: startPos [
 						put: (jumpsList at: each) + (jumpsList at: index) ].
 				computed addAll: jumpsListIndices.
 				^ self ].
-			jumpsListIndices add: index.			
+			jumpsListIndices add: index.
 			max := inputList at: index ].
 		inputList size = index ifTrue: [ computed addAll: jumpsListIndices ] ]
 ]
@@ -91,6 +96,7 @@ Jumps >> computeJumpsSlow: startPos [
 		| current |
 		current := inputList at: index.
 
+		max = totalmax ifTrue: [ ^ jumps ].
 		max < current ifTrue: [ 
 			jumps := jumps + 1.
 			max := current ] ].
@@ -116,7 +122,8 @@ Jumps >> initialize [
 
 	inputList := OrderedCollection new.
 	jumpsList := OrderedCollection new.
-	computed := Set new.
+	computed := Bag new.
+	totalmax := 0
 ]
 
 { #category : #accessing }
@@ -140,4 +147,14 @@ Jumps >> jumpsList [
 Jumps >> jumpsList: aCollection [ 
 
 	jumpsList := aCollection
+]
+
+{ #category : #accessing }
+Jumps >> totalmax [
+	^ totalmax
+]
+
+{ #category : #accessing }
+Jumps >> totalmax: anInteger [ 
+	totalmax := anInteger
 ]

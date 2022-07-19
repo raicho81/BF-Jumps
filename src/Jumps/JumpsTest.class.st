@@ -166,86 +166,17 @@ JumpsTest >> testComputeSlow [
 ]
 
 { #category : #tests }
-JumpsTest >> testComputeSlowVsFastWith10000Random [
-
-	| j jumpsSlow inpListRandom start duration |
-	inpListRandom := OrderedCollection new: 10000 withAll: 0.
-	inpListRandom := inpListRandom collect: [ :_ | 10000 atRandom ].
-	inpListRandom sort.
-	j := Jumps withInputList: inpListRandom.
-	start := Time nowUTC.
-	j computeSlow.
-	duration := Time nowUTC subtractTime: start.
-	Transcript
-		show: 'computeSlow time ms: ';
-		show: duration asNanoSeconds / 1000000;
-		cr.
-
-	jumpsSlow := j jumpsList copy.
-	j := Jumps withInputList: inpListRandom.
-	start := Time nowUTC.
-	j computeFast.
-	duration := Time nowUTC subtractTime: start.
-	Transcript
-		show: 'computeFast time ms: ';
-		show: duration asNanoSeconds / 1000000;
-		cr.
-	self assert: jumpsSlow equals: j jumpsList
-]
-
-{ #category : #tests }
-JumpsTest >> testComputeSlowVsFastWith20000Random [
-
-	| j jumpsSlow inpListRandom start duration |
-	inpListRandom := OrderedCollection new: 20000 withAll: 0.
-	inpListRandom := inpListRandom collect: [ :_ | 20000 atRandom ].
-	inpListRandom sort.
-	j := Jumps withInputList: inpListRandom.
-	start := Time nowUTC.
-	j computeSlow.
-	duration := Time nowUTC subtractTime: start.
-	Transcript
-		show: 'computeSlow time ms: ';
-		show: (duration asNanoSeconds / 1000000);
-		cr.
-
-	jumpsSlow := j jumpsList copy.
-	j := Jumps withInputList: inpListRandom.
-	start := Time nowUTC.
-	j computeFast.
-	duration := Time nowUTC subtractTime: start.
-	Transcript
-		show: 'computeFast time: ';
-		show: (duration asNanoSeconds / 1000000);
-		cr.
-	self assert: jumpsSlow equals: j jumpsList
-]
-
-{ #category : #tests }
 JumpsTest >> testComputeSlowVsFastWith50000Random [
 
-	| j jumpsSlow inpListRandom start duration |
+	| j jumpsSlow inpListRandom |
 	inpListRandom := OrderedCollection new: 50000 withAll: 0.
 	inpListRandom := inpListRandom collect: [ :_ | 50000 atRandom ].
-	inpListRandom sort.
 	j := Jumps withInputList: inpListRandom.
-	start := Time nowUTC.
 	j computeSlow.
-	duration := Time nowUTC subtractTime: start.
-	Transcript
-		show: 'computeSlow time ms: ';
-		show: duration asNanoSeconds / 1000000;
-		cr.
 
 	jumpsSlow := j jumpsList copy.
 	j := Jumps withInputList: inpListRandom.
-	start := Time nowUTC.
 	j computeFast.
-	duration := Time nowUTC subtractTime: start.
-	Transcript
-		show: 'computeFast time ms: ';
-		show: duration asNanoSeconds / 1000000;
-		cr.
 	self assert: jumpsSlow equals: j jumpsList
 ]
 
@@ -255,7 +186,6 @@ JumpsTest >> testComputeSlowVsFastWith5000Random [
 	| j jumpsSlow inpListRandom start duration |
 	inpListRandom := OrderedCollection new: 5000 withAll: 0.
 	inpListRandom := inpListRandom collect: [ :_ | 5000 atRandom ].
-	inpListRandom sort.
 	j := Jumps withInputList: inpListRandom.
 	start := Time nowUTC.
 	j computeSlow.
@@ -286,6 +216,7 @@ JumpsTest >> testInitializationIsOk [
 	self assert: j jumpsList isEmpty.
 	self assert: j inputList isEmpty.
 	self assert: j computed isEmpty.
+	self assert: j totalmax equals: 0.
 ]
 
 { #category : #tests }
@@ -296,5 +227,6 @@ JumpsTest >> testInitializationRandom [
 	self assert: j inputList size equals: 5000.
 	self assert: j jumpsList size equals: 5000.
 	self assert: j jumpsList sum equals: 0.
-	self assert: j inputList sum ~= 0 equals: true
+	self assert: j inputList sum ~= 0 equals: true.
+	self assert: j totalmax equals: j inputList max.
 ]
