@@ -50,37 +50,32 @@ Jumps class >> withRandom: nJumps [
 { #category : #algorithm }
 Jumps >> computeFast [
 
-	1 to: jumpsList size do: [ :index |
-	jumpsList at: index put: (self computeJumpsFast: index) ]
+	1 to: inputList size - 1 do: [ :each | self computeJumpsFast: each]
 ]
 
 { #category : #algorithm }
 Jumps >> computeJumpsFast: startPos [
 
 	| max jumpsListIndices |
+	(computed includes: startPos) ifTrue: [ ^ self ].
 	max := inputList at: startPos.
 	jumpsListIndices := OrderedCollection new.
 	jumpsListIndices add: startPos.
 
-	startPos + 1 to: inputList size do: [ :index |
+	startPos + 1 to: inputList size do: [ :index | 
 		max < (inputList at: index) ifTrue: [ 
-			max := inputList at: index.
-			(computed includes: index)
-				ifNil: [ 
-					jumpsListIndices do: [ :each | 
-						jumpsList at: each put: (jumpsList at: each) + 1 ].
-					jumpsListIndices add: index ]
-				ifNotNil: [ 
-					jumpsListIndices do: [ :each | 
-						jumpsList
-							at: each
-							put: (jumpsList at: each) + (jumpsList at: index) ].
-					computed addAll: jumpsListIndices.
-					^ jumpsList at: startPos ].
-
-			inputList size = index ifTrue: [ computed addAll: jumpsListIndices ] ] ].
-
-	^ jumpsList at: startPos
+			jumpsListIndices do: [ :each | 
+				jumpsList at: each put: (jumpsList at: each) + 1 ].
+			(computed includes: index) ifTrue: [ 
+				jumpsListIndices do: [ :each | 
+					jumpsList
+						at: each
+						put: (jumpsList at: each) + (jumpsList at: index) ].
+				computed addAll: jumpsListIndices.
+				^ self ].
+			jumpsListIndices add: index.			
+			max := inputList at: index ].
+		inputList size = index ifTrue: [ computed addAll: jumpsListIndices ] ]
 ]
 
 { #category : #algorithm }
