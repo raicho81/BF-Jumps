@@ -69,7 +69,8 @@ Class {
 		'jumpsList',
 		'inputList',
 		'computed',
-		'totalmax'
+		'totalmax',
+		'jumpsListIndices'
 	],
 	#category : #'Jumps-Core'
 }
@@ -109,13 +110,12 @@ Jumps >> computeFast [
 { #category : #algorithm }
 Jumps >> computeJumpsFast: startPos [
 
-	| max jumpsListIndices inputListSize addAll |
+	| max inputListSize addAll |
 	(computed includes: startPos) ifTrue: [ ^ self ].
 	max := inputList at: startPos.
-	jumpsListIndices := OrderedCollection new.
+	jumpsListIndices reset.
 	jumpsListIndices add: startPos.
 	inputListSize := inputList size.
-
 	addAll := [ :allJumpsListInidices | 
 	          computed addAll: allJumpsListInidices ].
 
@@ -178,7 +178,8 @@ Jumps >> initialize [
 	inputList := OrderedCollection new.
 	jumpsList := OrderedCollection new.
 	computed := Set new.
-	totalmax := 0
+	totalmax := 0.
+	jumpsListIndices := OrderedCollection new.
 ]
 
 { #category : #accessing }
@@ -202,6 +203,11 @@ Jumps >> jumpsList [
 Jumps >> jumpsList: aCollection [ 
 
 	jumpsList := aCollection
+]
+
+{ #category : #accessing }
+Jumps >> jumpsListIndices [
+	^ jumpsListIndices
 ]
 
 { #category : #accessing }

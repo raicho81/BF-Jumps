@@ -205,6 +205,7 @@ JumpsTest >> testInitializationIsOk [
 	self assert: j inputList isEmpty.
 	self assert: j computed isEmpty.
 	self assert: j totalmax equals: 0.
+	self assert: j jumpsListIndices isEmpty.
 ]
 
 { #category : #tests }
@@ -217,4 +218,5 @@ JumpsTest >> testInitializationRandom [
 	self assert: j jumpsList sum equals: 0.
 	self assert: j inputList sum ~= 0 equals: true.
 	self assert: j totalmax equals: j inputList max.
+	self assert: j jumpsListIndices isEmpty
 ]
