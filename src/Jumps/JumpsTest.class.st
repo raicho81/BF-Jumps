@@ -168,15 +168,12 @@ JumpsTest >> testComputeSlow [
 { #category : #tests }
 JumpsTest >> testComputeSlowVsFastWith50000Random [
 
-	| j jumpsSlow inpListRandom |
-	inpListRandom := OrderedCollection new: 50000 withAll: 0.
-	inpListRandom := inpListRandom collect: [ :_ | 50000 atRandom ].
-	
-	j := Jumps withInputList: inpListRandom.
+	| j jumpsSlow |
+	j := Jumps withRandom: 50000.
 	j computeSlow.
 	jumpsSlow := j jumpsList copy.
 
-	j := Jumps withInputList: inpListRandom.
+	j jumpsList: (OrderedCollection new: 50000 withAll: 0).
 	j computeFast.
 	self assert: jumpsSlow equals: j jumpsList
 ]
