@@ -121,7 +121,7 @@ Jumps >> computeJumpsFast: startPos [
 
 	startPos + 1 to: inputListSize do: [ :index | 
 		max = totalmax ifTrue: [ 
-			computed addAll: jumpsListIndices.
+			addAll value: jumpsListIndices.
 			^ self ].
 		max < (inputList at: index) ifTrue: [ 
 			jumpsListIndices do: [ :each | 
