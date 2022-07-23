@@ -173,11 +173,12 @@ Jumps >> computed [
 { #category : #initialization }
 Jumps >> initialize [
 
+	super initialize.
 	inputList := OrderedCollection new.
 	jumpsList := OrderedCollection new.
 	computed := Set new.
 	totalmax := 0.
-	jumpsListIndices := OrderedCollection new.
+	jumpsListIndices := OrderedCollection new
 ]
 
 { #category : #accessing }
