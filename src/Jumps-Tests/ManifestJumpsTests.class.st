@@ -6,3 +6,14 @@ Class {
 	#superclass : #PackageManifest,
 	#category : #'Jumps-Tests-Manifest'
 }
+
+{ #category : #'code-critics' }
+ManifestJumpsTests class >> ruleSentNotImplementedRuleV1FalsePositive [
+
+	^ #( #( #( #RGMethodDefinition #( #JumpsTest #testInitializationIsOk
+	              false ) )
+	        #'2022-07-13T11:51:07.987001+03:00' )
+	     #( #( #RGMethodDefinition #( #JumpsTest #testComputeSlow
+	              false ) )
+	        #'2022-07-13T15:45:19.554244+03:00' ) )
+]
