@@ -110,14 +110,12 @@ Jumps >> computeFast [
 { #category : #algorithm }
 Jumps >> computeJumpsFast: startPos [
 
-	| max inputListSize addAll |
+	| max inputListSize |
 	(computed includes: startPos) ifTrue: [ ^ self ].
 	max := inputList at: startPos.
 	jumpsListIndices reset.
 	jumpsListIndices add: startPos.
 	inputListSize := inputList size.
-	addAll := [ :allJumpsListInidices | 
-	          computed addAll: allJumpsListInidices ].
 
 	startPos + 1 to: inputListSize do: [ :index | 
 		max = totalmax ifTrue: [ 
@@ -131,11 +129,11 @@ Jumps >> computeJumpsFast: startPos [
 					jumpsList
 						at: each
 						put: (jumpsList at: each) + (jumpsList at: index) ].
-				addAll value: jumpsListIndices.
+				computed addAll: jumpsListIndices.
 				^ self ].
 			jumpsListIndices add: index.
 			max := inputList at: index ].
-		inputListSize = index ifTrue: [ addAll value: jumpsListIndices ] ]
+		inputListSize = index ifTrue: [ computed addAll: jumpsListIndices ] ]
 ]
 
 { #category : #algorithm }
