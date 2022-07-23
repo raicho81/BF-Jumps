@@ -72,7 +72,7 @@ Class {
 		'totalmax',
 		'jumpsListIndices'
 	],
-	#category : #'Jumps-Core'
+	#category : #'Jumps-Core-Base'
 }
 
 { #category : #initialization }

@@ -1,7 +1,7 @@
 Class {
 	#name : #JumpsTest,
 	#superclass : #TestCase,
-	#category : #'Jumps-Tests'
+	#category : #'Jumps-Tests-Base'
 }
 
 { #category : #tests }
